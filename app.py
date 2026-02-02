@@ -248,15 +248,15 @@ def show_analysis_page():
     
     with c1:
         st.subheader("Distribución (%)")
-        st.plotly_chart(px.pie(spend_by_tag, values='abs_amount', names='tag', hole=0.4), use_container_width=True)
+        st.plotly_chart(px.pie(spend_by_tag, values='abs_amount', names='tag', hole=0.4), width='stretch')
         
     with c2:
         st.subheader("Gasto por Etiqueta (€)")
-        st.plotly_chart(px.bar(spend_by_tag, x='tag', y='abs_amount', color='tag'), use_container_width=True)
+        st.plotly_chart(px.bar(spend_by_tag, x='tag', y='abs_amount', color='tag'), width='stretch')
 
     st.subheader("Evolución Temporal")
     monthly_tag = df_expenses_filtered.groupby(['month_year', 'tag'])['abs_amount'].sum().reset_index()
-    st.plotly_chart(px.area(monthly_tag, x='month_year', y='abs_amount', color='tag'), use_container_width=True)
+    st.plotly_chart(px.area(monthly_tag, x='month_year', y='abs_amount', color='tag'), width='stretch')
 
     # Tablas
     st.divider()
@@ -269,7 +269,7 @@ def show_analysis_page():
         total_sum = table_accum['Total (€)'].sum()
         total_row = pd.DataFrame({"Etiqueta": ["👉 TOTAL"], "Total (€)": [total_sum]})
         table_accum = pd.concat([total_row, table_accum], ignore_index=True)
-        st.dataframe(table_accum, width=None, use_container_width=True, hide_index=True)
+        st.dataframe(table_accum, width=None, width='stretch', hide_index=True)
     
     with col_t2:
         st.markdown("**Por Mes**")
@@ -277,7 +277,7 @@ def show_analysis_page():
         total_pivot = pd.DataFrame(pivot_df.sum(axis=0)).T
         total_pivot.index = ["👉 TOTAL"]
         pivot_df = pd.concat([total_pivot, pivot_df])
-        st.dataframe(pivot_df, width=None, use_container_width=True)
+        st.dataframe(pivot_df, width=None, width='stretch')
 
     # --- EDITOR DE MOVIMIENTOS FILTRADOS ---
     if selected_tags:
@@ -301,7 +301,7 @@ def show_analysis_page():
                 "concept": st.column_config.TextColumn("Concepto", disabled=True),
                 "tags_list": st.column_config.TextColumn("Etiquetas")
             },
-            use_container_width=True,
+            width='stretch',
             height=300,
             key="analysis_tx_editor",
             hide_index=True
